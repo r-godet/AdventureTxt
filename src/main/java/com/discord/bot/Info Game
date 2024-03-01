@@ -1,0 +1,26 @@
+Inicia el juego;
+Recojemos nombre de usuario del que inicia el bot;
+si el nombre es correcto seguimos, sino, lo volvemos a intentar;
+Nombre Verficado, iniciamos el juego.
+
+JUEGO:
+Al inciar, le damos una posicion incial, i le metemos un texto de tutorial, como funciona, como abrir el inventario,
+como interactuar con el inventario, como interactuar con un objeto, como moverse, los niveles, o en otro caso, el
+laberinto que tiene que seguir.
+
+Iniciamos el juego, se le tiene que preguntar al jugador que quiere hacer:
+    . Iniciar movimiento: Si = Preguntar quantas casillas quiere moverse, para arriba o para abajo.
+        Si movimientos estan dentro del rango de movimiento del nivel, entonces mover el jugador, SINO, preguntar de
+        nuevo por la posicion nueva de movimiento.
+    
+    . Abrir Inventario: por texto se le dira:
+        . Nombre Usuario.
+        . Objetos que tiene en el inventario.
+        . Que quiere hacer:
+            . Usar objeto
+                Si quiere utilizar un objeto, se le preguntara que objeto, si el nombre coincide con un objeto entonces
+                utilizara, SINO, volvera a pedir el nombre del objeto.
+            . Tirar objeto
+                Si quiere tirar un objeto, se le preguntara por el nombre del objeto, si el nombre coincide ENTONCES se
+                llevara a cabo el tirar, SINO, se volvera a preguntar por el nombre del objeto.
+
