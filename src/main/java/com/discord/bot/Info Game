@@ -4,16 +4,25 @@ si el nombre es correcto seguimos, sino, lo volvemos a intentar;
 Nombre Verficado, iniciamos el juego.
 
 JUEGO:
-Al inciar, le damos una posicion incial, i le metemos un texto de tutorial, como funciona, como abrir el inventario,
-como interactuar con el inventario, como interactuar con un objeto, como moverse, los niveles, o en otro caso, el
-laberinto que tiene que seguir.
+Al inciar, le metemos un texto de tutorial, como funciona, como abrir el inventario,como interactuar con el inventario,
+como interactuar con un objeto, como moverse, los niveles, o en otro caso, el laberinto que tiene que seguir.
 
 JUGADOR:
-El Jugador se llamara de la misma manera que el nombre de discord, el cual tendra un inventario, y el jugador tendra un
+El Jugador se llamara de la misma manera que el nombre de discord, el cual tendra un inventario limitado a 5 objetos, y el jugador tendra un
 total de 3 vidas.
 
-Iniciamos el juego, se le tiene que preguntar al jugador que quiere hacer:
+COMBATES:
+Los combates seran por turnos, primero ira el jugador y luego ira el enemigo, los enemigos en general todos tendran el
+mismo ataque, al igual que jugador tambien puede ser que falle o que acierte el ataque.
 
+ENEMIGOS:
+Los enemigos tiene 2 vidas, y 1 tipo de ataque el cual sera un numero random, 1 = El ataque es efectivo o 2 = no es
+efectivo el ataque.
+
+ENEMIGO FINAL:
+Este enemigo sera una copia del enemigo pero tendras 3 vidas, y ya esta.
+
+Iniciamos el juego, se le tiene que preguntar al jugador que quiere hacer:
     . Iniciar movimiento: Si = Preguntar quantas casillas quiere moverse, para arriba o para abajo.
         Si movimientos estan dentro del rango de movimiento del nivel, entonces mover el jugador, SINO, preguntar de
         nuevo por la posicion nueva de movimiento.
@@ -29,13 +38,33 @@ Iniciamos el juego, se le tiene que preguntar al jugador que quiere hacer:
                 Si quiere tirar un objeto, se le preguntara por el nombre del objeto, si el nombre coincide ENTONCES se
                 llevara a cabo el tirar, SINO, se volvera a preguntar por el nombre del objeto.
 
-    . Dinamica del juego, Tendras que pasar por un nivel el cual a medida que avanzas tendras 1 enemigo el cual tendras
-    que derrotar, sera sencill:
-        . Al encontrartelo, sale por pantalla un texto inicial del enemigo, el enemigo dira su frase.
-        . El enemigo tendra 2 vidas.
-        . Al iniciar la lucha del juagdor contra el enemigo, se te dara varias opciones.
-            . Inciar un ataque.
-                . Si inicias un ataque, el jugador puede ser que le de o no, simplemente sera un numero random entre 2
-                numeros, pongamos que 1 = ataque completo, 2 = ataque fallido, si el enemigo recibe un ataque perdera 1
-                vida de las 2 que tiene. 
+    . Dinamica del juego:
+        .Tendras que pasar por un nivel el cual a medida que avanzas tendras 1 enemigo el cual tendras
+        que derrotar, sera sencill:
+            . Al encontrartelo, sale por pantalla un texto inicial del enemigo, el enemigo dira su frase.
+            . El enemigo tendra 2 vidas.
+            . Al iniciar la lucha del juagdor contra el enemigo, se te dara varias opciones.
+                . Inciar un ataque:
+                    . Si inicias un ataque, el jugador puede ser que le de o no, simplemente sera un numero random entre 2
+                    numeros, pongamos que 1 = ataque completo, 2 = ataque fallido, si el enemigo recibe un ataque perdera 1
+                    vida de las 2 que tiene.
+                . Abrir inventario:
+                    . Se podra abrir el inventario para ver si tienes algun objeto util para utilizar en el combate.
+                    . Si hay alguno y lo utilizas entonces, volvera a la pantalla de combate y y te saldra por texto el
+                    objeto que estas utilizando.
+                . Huir:
+                    . Si huyes del combate, automaticamente perderas 1 vida, pero saldras del combate.
+        . Una vez pasado el enemigo, llegaras al nivel 2, el cual a medida que avanzas encontraras un cofre, este
+        tendras varias opciones, la cual tendras que escojer entre ellas para ver cual te llevas, teniendo en cuenta el
+        espacio que te queda en el inventario.
+            . OBJETO 1
+            . OBJETO 2
+            . OBJETO 3
+        SI tienes espacio suficiente podrias cojer los tres, SINO el juego te avisara de que necesitas desacerte de un
+        objeto o varios para poder cojer uno de esos objetos.
+
+        . Te encuentras en el nivel 2, avanzas rapidamente y te encuentras al 1 enemigo 2.0, seguiras la misma dinamica
+        que del enemigo del nivel 1. El enemigo tambien podra atacarte.
+
+        . Llegas al final del juego, aqui tendras que luchar contra el enemigo final, si ganas podras superar el nivel.
 
