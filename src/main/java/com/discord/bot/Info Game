@@ -8,11 +8,16 @@ Al inciar, le damos una posicion incial, i le metemos un texto de tutorial, como
 como interactuar con el inventario, como interactuar con un objeto, como moverse, los niveles, o en otro caso, el
 laberinto que tiene que seguir.
 
+JUGADOR:
+El Jugador se llamara de la misma manera que el nombre de discord, el cual tendra un inventario, y el jugador tendra un
+total de 3 vidas.
+
 Iniciamos el juego, se le tiene que preguntar al jugador que quiere hacer:
+
     . Iniciar movimiento: Si = Preguntar quantas casillas quiere moverse, para arriba o para abajo.
         Si movimientos estan dentro del rango de movimiento del nivel, entonces mover el jugador, SINO, preguntar de
         nuevo por la posicion nueva de movimiento.
-    
+
     . Abrir Inventario: por texto se le dira:
         . Nombre Usuario.
         . Objetos que tiene en el inventario.
@@ -23,4 +28,14 @@ Iniciamos el juego, se le tiene que preguntar al jugador que quiere hacer:
             . Tirar objeto
                 Si quiere tirar un objeto, se le preguntara por el nombre del objeto, si el nombre coincide ENTONCES se
                 llevara a cabo el tirar, SINO, se volvera a preguntar por el nombre del objeto.
+
+    . Dinamica del juego, Tendras que pasar por un nivel el cual a medida que avanzas tendras 1 enemigo el cual tendras
+    que derrotar, sera sencill:
+        . Al encontrartelo, sale por pantalla un texto inicial del enemigo, el enemigo dira su frase.
+        . El enemigo tendra 2 vidas.
+        . Al iniciar la lucha del juagdor contra el enemigo, se te dara varias opciones.
+            . Inciar un ataque.
+                . Si inicias un ataque, el jugador puede ser que le de o no, simplemente sera un numero random entre 2
+                numeros, pongamos que 1 = ataque completo, 2 = ataque fallido, si el enemigo recibe un ataque perdera 1
+                vida de las 2 que tiene. 
 

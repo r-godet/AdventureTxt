@@ -8,8 +8,4 @@ public class GeneralGame {
 
     }
 
-    public void User()
-    {
-
-    }
 }
