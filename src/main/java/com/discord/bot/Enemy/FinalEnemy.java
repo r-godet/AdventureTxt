@@ -5,7 +5,7 @@ import java.util.Random;
 public class FinalEnemy {
 
     String name;
-    int vidas = 3;
+    public int vidas = 3;
 
     public void perderVidasEnemys(int vidas_enemys) {
         vidas_enemys--;

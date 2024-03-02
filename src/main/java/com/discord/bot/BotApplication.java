@@ -6,8 +6,11 @@ import com.discord.bot.game.GeneralGame;
 
 @SpringBootApplication
 public class BotApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(BotApplication.class, args);
-	}
 
+	static GeneralGame gg = new GeneralGame();
+	public static void main(String[] args) {
+
+		SpringApplication.run(BotApplication.class, args);
+		gg.Init();
+	}
 }
