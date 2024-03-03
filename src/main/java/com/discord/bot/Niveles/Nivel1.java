@@ -5,6 +5,8 @@ import com.discord.bot.Enemy.Enemy;
 import com.discord.bot.user.User;
 import com.discord.bot.Inventary.Inventary;
 import com.discord.bot.Inventary.InventoryServices;
+import jdk.swing.interop.SwingInterOpUtils;
+
 import java.util.Scanner;
 public class Nivel1 {
     static Scanner scan = new Scanner(System.in);
@@ -19,6 +21,19 @@ public class Nivel1 {
 
     public void level1(){
         System.out.println("Bienvenido al nivel 1");
+        System.out.println("Al entrat encuentras un cofre, lo quieres abrir? (S/N)");
+        String abrir = scan.nextLine();
+        if(abrir.equals("S")){
+            System.out.println("Encontraste: \n" +
+                                "Elixir de la Vida\n" +
+                                "Manzana podrida\n" +
+                                "Espada desafilada\n" +
+                                "Quieres agregar alguno de estos objetos? (S/N)");
+            String agregar = scan.nextLine();
+            if(agregar.equals("S")){
+
+            }
+        }
         System.out.println("Al entrar te has encontrado con un enemigo, que haras, lucharas o huiras? (L / H)");
         String combateChoice = scan.nextLine();
 
@@ -50,7 +65,11 @@ public class Nivel1 {
                 case 2:
                     is.obtenerInventario();
                     System.out.println("Quieres utilizar algun objeto? (S/N)");
-
+                    String objeto = scan.nextLine();
+                    if(objeto.equals("S")){
+                        is.utilizarItem();
+                    }
+                    break;
             }
         }
     }

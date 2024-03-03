@@ -19,6 +19,10 @@ public class InventoryServices {
 
     }
 
+    public void utilizarItem(){
+
+    }
+
     public List<AbstractReadWriteAccess.Item> obtenerInventario() {
         return itemRepository.findAll();
     }
