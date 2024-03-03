@@ -28,7 +28,7 @@ public class Nivel1 {
                                 "Elixir de la Vida\n" +
                                 "Manzana podrida\n" +
                                 "Espada desafilada\n" +
-                                "Quieres agregar alguno de estos objetos? (S/N)");
+                                "Quieres coger alguno de estos objetos? (S/N)");
             String agregar = scan.nextLine();
             if(agregar.equals("S")){
 
