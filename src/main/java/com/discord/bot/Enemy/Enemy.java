@@ -12,6 +12,7 @@ public class Enemy {
     public void perderVidasEnemys() {
         vidas--;
     }
+
     public void ataqueEnemy()
     {
         System.out.println("Enemigo va a atacar.");
@@ -28,7 +29,7 @@ public class Enemy {
     }
     public void dead(){
         if(vidas == 0){
-            System.out.println("El enemigo ha muerto");
+            System.out.println("El enemigo ha muerto, continua tu camino...");
         }
     }
 }

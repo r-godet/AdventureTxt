@@ -31,6 +31,7 @@ public class Player {
     }
 
     public void perderVidasPlayer(){
+
         vidas--;
     }
 

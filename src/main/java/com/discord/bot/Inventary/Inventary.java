@@ -10,7 +10,7 @@ public class Inventary implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
     @Column(name = "object")
     private String name;
 

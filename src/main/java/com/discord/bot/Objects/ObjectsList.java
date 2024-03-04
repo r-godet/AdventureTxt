@@ -10,7 +10,7 @@ public class ObjectsList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "Objeto")
+    @Column(name = "objeto")
     private String objeto;
 
     public ObjectsList() {
