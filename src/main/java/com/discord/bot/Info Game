@@ -5,11 +5,11 @@ Nombre Verficado, iniciamos el juego.
 
 JUEGO:
 Al inciar, le metemos un texto de tutorial, como funciona, como abrir el inventario,como interactuar con el inventario,
-como interactuar con un objeto, como moverse, los niveles, o en otro caso, el laberinto que tiene que seguir.
+como interactuar con un objeto, los niveles, o en otro caso, el laberinto que tiene que seguir.
 
 JUGADOR:
-El Jugador se llamara de la misma manera que el nombre de discord, el cual tendra un inventario limitado a 5 objetos, y el jugador tendra un
-total de 3 vidas.
+El Jugador se llamara de la misma manera que el nombre de discord, el cual tendra un inventario limitado a 5 objetos,
+y el jugador tendra un total de 3 vidas.
 
 COMBATES:
 Los combates seran por turnos, primero ira el jugador y luego ira el enemigo, los enemigos en general todos tendran el
