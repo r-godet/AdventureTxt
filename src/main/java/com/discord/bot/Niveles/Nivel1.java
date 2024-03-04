@@ -6,6 +6,7 @@ import com.discord.bot.Player.Player;
 import com.discord.bot.Enemy.Enemy;
 import com.discord.bot.user.User;
 import com.discord.bot.Inventary.Inventary;
+import com.discord.bot.Inventary.ItemRepository;
 import com.discord.bot.Inventary.InventoryServices;
 import jdk.swing.interop.SwingInterOpUtils;
 import com.discord.bot.Inventary.ItemRepository;
@@ -29,11 +30,14 @@ public class Nivel1 {
     @Autowired
     ObjectsListRepository repositoryObjects;
 
+
+
     boolean enemigoVivo = true;
     @Autowired
     InventoryServices is;
 
     public void level1() {
+        inicializarObjetosBase();
         System.out.println("Bienvenido al nivel 1");
         System.out.print("Al entrat encuentras un cofre, lo quieres abrir? (S/N): ");
         String abrir = scan.nextLine();
@@ -49,12 +53,15 @@ public class Nivel1 {
                 int agregarObj = scan.nextInt();
                 switch (agregarObj) {
                     case 1:
+                        guardarObjetos("Elixir de la Vida");
                         System.out.println("\nHas obtenido el elexir de vida");
                         break;
                     case 2:
+                        guardarObjetos("Manzanas Podridas");
                         System.out.println("\nHas obtenido dos manzanas podridas");
                         break;
                     case 3:
+                        guardarObjetos("Espada desafilada");
                         System.out.println("\nHas obtenido la espada desafilada");
                         break;
                     default:
@@ -113,8 +120,15 @@ public class Nivel1 {
         objetosIniciales.add(new ObjectsList("Portal de Huida"));
 
         objetosIniciales.forEach(objeto -> repositoryObjects.save(objeto));
-
         System.out.println("Objetos base inicializados y guardados en la base de datos.");
+    }
+
+    public void guardarObjetos(String nombreObjeto){
+
+        Inventary newItem = new Inventary(nombreObjeto, 1);
+        repositoryInventary.save(newItem);
+
+        System.out.println("item guardado con exito en el inventario." +nombreObjeto);
     }
 }
 
