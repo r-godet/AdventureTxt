@@ -23,7 +23,7 @@ public class InventoryServices {
 
     }
 
-    public List<AbstractReadWriteAccess.Item> obtenerInventario() {
+    public List<Inventary> obtenerInventario() {
         return itemRepository.findAll();
     }
 }
