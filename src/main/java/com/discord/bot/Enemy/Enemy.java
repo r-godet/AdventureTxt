@@ -1,10 +1,19 @@
 package com.discord.bot.Enemy;
 
+import java.io.Serializable;
 import java.util.Random;
 import com.discord.bot.Player.Player;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
-public class Enemy {
+@Entity
+@Table(name = "enemy")
+public class Enemy implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     String name;
     public int vidas = 2;
     Player player = new Player();
@@ -15,16 +24,11 @@ public class Enemy {
 
     public void ataqueEnemy()
     {
-        System.out.println("Enemigo va a atacar.");
         Random random = new Random();
         int randomNumber = random.nextInt(2) + 1;
 
         if(randomNumber == 1){
-            System.out.println("El ataque ha sido efectivo");
             player.perderVidasPlayer();
-        }
-        else{
-            System.out.println("El ataque no ha sido efectivo");
         }
     }
     public void dead(){

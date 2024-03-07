@@ -1,8 +1,18 @@
 package com.discord.bot.Enemy;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.io.Serializable;
 import java.util.Random;
 
-public class FinalEnemy {
+@Entity
+@Table(name = "inventary")
+public class FinalEnemy implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     String name;
     public int vidas = 3;

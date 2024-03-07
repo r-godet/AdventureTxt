@@ -1,7 +1,9 @@
 package com.discord.bot.Player;
+import com.discord.bot.services.MessageCreateListener;
 import com.discord.bot.user.User;
 
 import javax.management.Query;
+import java.io.Serializable;
 import java.util.Random;
 import com.discord.bot.Enemy.Enemy;
 import jakarta.persistence.Entity;
@@ -11,19 +13,20 @@ import jdk.jfr.Enabled;
 
 @Entity
 @Table(name = "player")
-public class Player {
+public class Player implements Serializable {
+
+    @Id
+    private Long id;
 
     @Column(name = "vidas")
-    public int vidas = 3;
-    Enemy enemy = new Enemy();
+    public int vidas;
 
-    public void ataquePlayer(){
+    public void ataquePlayer(MessageCreateListener event){
         Random random = new Random();
 
         int randomNum = random.nextInt(2) + 1;
         if(randomNum == 1){
             System.out.println("el ataque ha sido efectivo");
-            enemy.perderVidasEnemys();
         }
         else {
             System.out.println("El ataque no ha sido efectivo");

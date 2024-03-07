@@ -6,22 +6,26 @@ import com.discord.bot.Player.Player;
 import com.discord.bot.Enemy.Enemy;
 import com.discord.bot.user.User;
 import com.discord.bot.Inventary.Inventary;
-import com.discord.bot.Inventary.ItemRepository;
 import com.discord.bot.Inventary.InventoryServices;
-import jdk.swing.interop.SwingInterOpUtils;
-import com.discord.bot.Inventary.ItemRepository;
+import discord4j.core.GatewayDiscordClient;
+import discord4j.core.event.domain.message.MessageCreateEvent;
+import discord4j.core.spec.legacy.LegacyMessageCreateSpec;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import com.discord.bot.game.GeneralGame;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
+import java.util.function.Consumer;
+
 public class Nivel1 {
+
     @Autowired
     ItemRepository repositoryInventary;
 
-    GeneralGame gg = new GeneralGame();
+    @Autowired
+    private GeneralGame gg;
     static Scanner scan = new Scanner(System.in);
     Player player = new Player();
     Enemy enemy = new Enemy();
@@ -30,84 +34,56 @@ public class Nivel1 {
     @Autowired
     ObjectsListRepository repositoryObjects;
 
-
+    private final GatewayDiscordClient client;
 
     boolean enemigoVivo = true;
     @Autowired
     InventoryServices is;
+    private String estadoActual;
 
-    public void level1() {
+    public Nivel1(GatewayDiscordClient client, ObjectsListRepository repositoryObjects) {
+        this.client = client;
+        this.repositoryObjects = repositoryObjects;
+        this.estadoActual = "inicio";
+        inicializarManejadorDeEventos();
+    }
+    public void inicializarManejadorDeEventos() {
         inicializarObjetosBase();
-        System.out.println("Bienvenido al nivel 1");
-        System.out.print("Al entrat encuentras un cofre, lo quieres abrir? (S/N): ");
-        String abrir = scan.nextLine();
-        if (abrir.equals("S")) {
-            System.out.print("En el cofre has encontrado: \n" +
-                    "1. Elixir de vida\n" +
-                    "2. Dos manzanas podridas\n" +
-                    "3. Espada desafilada\n" +
-                    "Quieres coger alguno de estos objetos? (S/N): ");
-            String agregar = scan.nextLine();
-            if (agregar.equals("S")) {
-                System.out.print("Que objecto quieres obtener? (introduce el numero en el que esta ordenado): ");
-                int agregarObj = scan.nextInt();
-                switch (agregarObj) {
-                    case 1:
-                        guardarObjetos("Elixir de la Vida");
-                        System.out.println("\nHas obtenido el elexir de vida");
-                        break;
-                    case 2:
-                        guardarObjetos("Manzanas Podridas");
-                        System.out.println("\nHas obtenido dos manzanas podridas");
-                        break;
-                    case 3:
-                        guardarObjetos("Espada desafilada");
-                        System.out.println("\nHas obtenido la espada desafilada");
-                        break;
-                    default:
-                        System.out.println("\nOpción inválida.\n");
-                        return;
-                }
-            }
-        }
-        System.out.print("Continuando con tu camino te has encontrado con un enemigo. Vas a querer luchar o huir? (L/H): ");
-        String combateChoice = scan.nextLine();
-
-        if (combateChoice.equals("H")) {
-            player.perderVidasPlayer();
-            System.out.println("El jugador pierde una vida al intentar escapar " + player.vidas);
-        } else if (combateChoice.equals("L")) {
-            System.out.println("Has escogido luchar contra el enemigo. Puedes hacer varias cosas primero\n" +
-                    "Escoje: ");
-            System.out.println("Atacar al Enemigo -- 1\n" +
-                    "Ver el inventario -- 2");
-            int combateAccion = scan.nextInt();
-            switch (combateAccion) {
-                case 1:
-                    while (enemigoVivo) {
-                        player.ataquePlayer();
-                        if (enemy.vidas > 1) {
-                            enemy.ataqueEnemy();
-                            if (player.vidas > 1) {
-                                player.ataquePlayer();
-                                if (enemy.vidas <= 0) {
-                                    enemy.dead();
-                                    enemigoVivo = false;
-                                }
+        client.getEventDispatcher().on(MessageCreateEvent.class)
+                .subscribe(event -> {
+                    String content = event.getMessage().getContent();
+                    switch (estadoActual) {
+                        case "inicio":
+                            if (content.startsWith("S")) {
+                                event.getMessage().getChannel().block().createMessage("Bienvenido al nivel1\n" +
+                                        "Al entrar te has encontrado un enemigo, entras en combate con este pero antes\n" +
+                                        "puedes hacer varias cosas: \n" +
+                                        "Atacar\n" +
+                                        "Abrir_inventario\n" +
+                                        "Huir").block();
+                                estadoActual = "esperandoAccion";
                             }
-                        }
+                            break;
+                        case "esperandoAccion":
+                            if (content.equals("Atacar")) {
+                                atacar(event);
+                                estadoActual = "esperandoAccion";
+                            } else if (content.equals("Abrir_inventario")) {
+                                abrirInventario(event);
+                                estadoActual = "esperandoAccion";
+                            }
+                            break;
                     }
-                    break;
-                case 2:
-                    is.obtenerInventario();
-                    System.out.println("Quieres utilizar algun objeto? (S/N)");
-                    String objeto = scan.nextLine();
-                    if (objeto.equals("S")) {
-                        is.utilizarItem();
-                    }
-                    break;
-            }
-        }
+                });
+    }
+
+
+    public void atacar(MessageCreateEvent event){
+        Objects.requireNonNull(event.getMessage().getChannel().block().createMessage("Has escogido atacar").block());
+    }
+
+    public void abrirInventario(MessageCreateEvent event){
+        Objects.requireNonNull(event.getMessage().getChannel().block().createMessage("Abrir el inventario" + is.obtenerInventario()).block());
     }
 
     public void inicializarObjetosBase() {
