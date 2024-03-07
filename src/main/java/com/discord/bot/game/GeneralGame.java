@@ -21,7 +21,9 @@ import java.util.List;
 import java.util.Objects;
 
 import discord4j.core.object.entity.channel.MessageChannel;
+import org.springframework.stereotype.Component;
 
+@Component
 public class GeneralGame {
 
     private final GatewayDiscordClient client;

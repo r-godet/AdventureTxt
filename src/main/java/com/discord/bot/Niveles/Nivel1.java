@@ -35,8 +35,6 @@ public class Nivel1 {
     ObjectsListRepository repositoryObjects;
 
     private final GatewayDiscordClient client;
-
-    boolean enemigoVivo = true;
     @Autowired
     InventoryServices is;
     private String estadoActual;
