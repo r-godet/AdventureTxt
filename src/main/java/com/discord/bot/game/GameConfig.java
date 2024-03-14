@@ -1,5 +1,6 @@
 package com.discord.bot.game;
 
+import com.discord.bot.Inventary.InventoryServices;
 import com.discord.bot.Objects.ObjectsListRepository;
 import discord4j.core.GatewayDiscordClient;
 import org.springframework.context.annotation.Bean;
@@ -9,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class GameConfig {
 
     @Bean
-    public GeneralGame generalGame(GatewayDiscordClient client, ObjectsListRepository objectsListRepository) {
-        return new GeneralGame(client,objectsListRepository);
+    public GeneralGame generalGame(GatewayDiscordClient client, ObjectsListRepository objectsListRepository, InventoryServices is) {
+        return new GeneralGame(client,objectsListRepository, is);
     }
 }

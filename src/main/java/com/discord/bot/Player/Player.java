@@ -6,6 +6,8 @@ import javax.management.Query;
 import java.io.Serializable;
 import java.util.Random;
 import com.discord.bot.Enemy.Enemy;
+import discord4j.core.GatewayDiscordClient;
+import discord4j.core.event.domain.message.MessageCreateEvent;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.*;
@@ -21,15 +23,20 @@ public class Player implements Serializable {
     @Column(name = "vidas")
     public int vidas;
 
-    public void ataquePlayer(MessageCreateListener event){
-        Random random = new Random();
+    @Transient
+    private final GatewayDiscordClient client;
+    public Player(GatewayDiscordClient client){
+        this.client = client;
+    }
 
+    public void ataquePlayer(MessageCreateEvent event) {
+        Random random = new Random();
         int randomNum = random.nextInt(2) + 1;
-        if(randomNum == 1){
-            System.out.println("el ataque ha sido efectivo");
-        }
-        else {
-            System.out.println("El ataque no ha sido efectivo");
+        int randomNum2 = random.nextInt(3) + 4;
+        if(randomNum == 1 | randomNum2 == 4){
+            event.getMessage().getChannel().block().createMessage("Ataque Completado con éxito").block();
+        } else {
+            event.getMessage().getChannel().block().createMessage("Ataque no completado.").block();
         }
     }
 
@@ -38,10 +45,12 @@ public class Player implements Serializable {
         vidas--;
     }
 
-    public void DiePlayer(){
+    public void DiePlayer()
+    {
         if(vidas == 0){
             System.out.println("El juagdor ha muerto");
         }
     }
 
 }
+

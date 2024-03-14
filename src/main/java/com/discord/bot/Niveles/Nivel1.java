@@ -24,29 +24,30 @@ public class Nivel1 {
     @Autowired
     ItemRepository repositoryInventary;
 
+    private final GatewayDiscordClient client;
+
     @Autowired
     private GeneralGame gg;
     static Scanner scan = new Scanner(System.in);
-    Player player = new Player();
-    Enemy enemy = new Enemy();
     User user = new User();
     Inventary inv = new Inventary();
     @Autowired
     ObjectsListRepository repositoryObjects;
-
-    private final GatewayDiscordClient client;
     @Autowired
-    InventoryServices is;
+    private InventoryServices is;
     private String estadoActual;
 
-    public Nivel1(GatewayDiscordClient client, ObjectsListRepository repositoryObjects) {
+    public Nivel1(GatewayDiscordClient client, ObjectsListRepository repositoryObjects, InventoryServices is) {
         this.client = client;
         this.repositoryObjects = repositoryObjects;
+        this.is = is;
         this.estadoActual = "inicio";
         inicializarManejadorDeEventos();
     }
     public void inicializarManejadorDeEventos() {
         inicializarObjetosBase();
+        Player player = new Player(client);
+        Enemy enemy = new Enemy(client);
         client.getEventDispatcher().on(MessageCreateEvent.class)
                 .subscribe(event -> {
                     String content = event.getMessage().getContent();
@@ -65,6 +66,7 @@ public class Nivel1 {
                         case "esperandoAccion":
                             if (content.equals("Atacar")) {
                                 atacar(event);
+                                player.ataquePlayer(event);
                                 estadoActual = "esperandoAccion";
                             } else if (content.equals("Abrir_inventario")) {
                                 abrirInventario(event);
@@ -81,7 +83,7 @@ public class Nivel1 {
     }
 
     public void abrirInventario(MessageCreateEvent event){
-        Objects.requireNonNull(event.getMessage().getChannel().block().createMessage("Abrir el inventario" + is.obtenerInventario()).block());
+        Objects.requireNonNull(event.getMessage().getChannel().block().createMessage(is.abrirInventario(event)).block());
     }
 
     public void inicializarObjetosBase() {

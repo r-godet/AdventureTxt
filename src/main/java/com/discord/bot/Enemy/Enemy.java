@@ -3,6 +3,7 @@ package com.discord.bot.Enemy;
 import java.io.Serializable;
 import java.util.Random;
 import com.discord.bot.Player.Player;
+import discord4j.core.GatewayDiscordClient;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.*;
@@ -16,7 +17,12 @@ public class Enemy implements Serializable {
     private Long id;
     String name;
     public int vidas = 2;
-    Player player = new Player();
+    @Transient
+    private final GatewayDiscordClient client;
+
+    public Enemy(GatewayDiscordClient client) {
+        this.client = client;
+    }
 
     public void perderVidasEnemys() {
         vidas--;
@@ -24,6 +30,7 @@ public class Enemy implements Serializable {
 
     public void ataqueEnemy()
     {
+        Player player = new Player(client);
         Random random = new Random();
         int randomNumber = random.nextInt(2) + 1;
 

@@ -1,6 +1,7 @@
 package com.discord.bot.game;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import com.discord.bot.Inventary.Inventary;
+import com.discord.bot.Inventary.InventoryServices;
 import com.discord.bot.Objects.ObjectsList;
 import com.discord.bot.user.User;
 import discord4j.common.util.Snowflake;
@@ -32,12 +33,16 @@ public class GeneralGame {
     @Autowired
     ObjectsListRepository repositoryObjects;
 
+    @Autowired
+    InventoryServices is;
+
 
     @Autowired
-    public GeneralGame(GatewayDiscordClient client, ObjectsListRepository repositoryObjects) {
+    public GeneralGame(GatewayDiscordClient client, ObjectsListRepository repositoryObjects, InventoryServices is) {
         this.client = client;
         this.repositoryObjects = repositoryObjects;
-        Nivel1 n1 = new Nivel1(client, repositoryObjects);
+        this.is = is;
+        Nivel1 n1 = new Nivel1(client, repositoryObjects, is);
         Init();
         Start();
     }
