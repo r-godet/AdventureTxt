@@ -26,7 +26,7 @@ public class Enemy implements Serializable {
 
     public void perderVidasEnemys() {
         vidas--;
-    }
+    } //ya está hecho que pierda vidas no?
 
     public void ataqueEnemy()
     {
