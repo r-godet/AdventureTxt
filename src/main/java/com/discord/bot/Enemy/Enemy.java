@@ -29,7 +29,7 @@ public class Enemy implements Serializable {
     public void perderVidasEnemys(MessageCreateEvent event) {
         Objects.requireNonNull(event.getMessage().getChannel().block().createMessage("El enemigo pierde 1 vida").block());
         vidas--;
-    }
+    } //ya está hecho que pierda vidas no?
 
     public void ataqueEnemy()
     {
