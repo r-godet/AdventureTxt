@@ -30,11 +30,13 @@ public class Player implements Serializable {
     }
 
     public void ataquePlayer(MessageCreateEvent event) {
+        Enemy enemy = new Enemy(client);
         Random random = new Random();
         int randomNum = random.nextInt(2) + 1;
         int randomNum2 = random.nextInt(3) + 4;
         if(randomNum == 1 | randomNum2 == 4){
             event.getMessage().getChannel().block().createMessage("Ataque Completado con éxito").block();
+            enemy.perderVidasEnemys(event);
         } else {
             event.getMessage().getChannel().block().createMessage("Ataque no completado.").block();
         }

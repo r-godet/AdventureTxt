@@ -42,9 +42,10 @@ public class GeneralGame {
         this.client = client;
         this.repositoryObjects = repositoryObjects;
         this.is = is;
-        Nivel1 n1 = new Nivel1(client, repositoryObjects, is);
         Init();
         Start();
+        Nivel1 n1 = new Nivel1(client, repositoryObjects, is);
+
     }
     public String Start(){
         client.getEventDispatcher().on(MessageCreateEvent.class)
@@ -68,12 +69,6 @@ public class GeneralGame {
                 .subscribe(event -> {
                     String botName = event.getSelf().getUsername();
                     System.out.println("Conectado como: " + botName);
-                    String channelId = "general";
-
-                    client.getChannelById(Snowflake.of(channelId))
-                            .ofType(MessageChannel.class) // Asegúrate de que es un canal donde se pueden enviar mensajes
-                            .flatMap(channel -> channel.createMessage("Bienvenido a PandWar, este es un juego de texto con dos niveles...")) // Modifica el mensaje según necesites
-                            .subscribe();
                 });
         Start();
         client.onDisconnect().block();

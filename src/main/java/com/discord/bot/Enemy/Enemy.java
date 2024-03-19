@@ -1,9 +1,11 @@
 package com.discord.bot.Enemy;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Random;
 import com.discord.bot.Player.Player;
 import discord4j.core.GatewayDiscordClient;
+import discord4j.core.event.domain.message.MessageCreateEvent;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.*;
@@ -24,7 +26,8 @@ public class Enemy implements Serializable {
         this.client = client;
     }
 
-    public void perderVidasEnemys() {
+    public void perderVidasEnemys(MessageCreateEvent event) {
+        Objects.requireNonNull(event.getMessage().getChannel().block().createMessage("El enemigo pierde 1 vida").block());
         vidas--;
     }
 

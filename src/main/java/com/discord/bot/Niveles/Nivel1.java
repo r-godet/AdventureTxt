@@ -10,31 +10,41 @@ import com.discord.bot.Inventary.InventoryServices;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.spec.legacy.LegacyMessageCreateSpec;
+import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.discord.bot.game.GeneralGame;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.function.Consumer;
-
+@Entity
+@Table(name =  "Nivel 1")
 public class Nivel1 {
 
-    @Autowired
-    ItemRepository repositoryInventary;
 
-    private final GatewayDiscordClient client;
+    private transient ItemRepository repositoryInventary;
 
-    @Autowired
-    private GeneralGame gg;
+    private transient GatewayDiscordClient client;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "Enemys")
+    int enemys = 2;
+
+    @Column(name = "player")
+    int players = 1;
+
     static Scanner scan = new Scanner(System.in);
     User user = new User();
     Inventary inv = new Inventary();
-    @Autowired
-    ObjectsListRepository repositoryObjects;
-    @Autowired
-    private InventoryServices is;
+
+    private transient ObjectsListRepository repositoryObjects;
+
+    private transient InventoryServices is;
     private String estadoActual;
 
     public Nivel1(GatewayDiscordClient client, ObjectsListRepository repositoryObjects, InventoryServices is) {
@@ -45,6 +55,7 @@ public class Nivel1 {
         inicializarManejadorDeEventos();
     }
     public void inicializarManejadorDeEventos() {
+        System.out.println("Iniciador de Eventos inciado");
         inicializarObjetosBase();
         Player player = new Player(client);
         Enemy enemy = new Enemy(client);
@@ -53,6 +64,7 @@ public class Nivel1 {
                     String content = event.getMessage().getContent();
                     switch (estadoActual) {
                         case "inicio":
+                            System.out.println("iniciado correctamente switch");
                             if (content.startsWith("S")) {
                                 event.getMessage().getChannel().block().createMessage("Bienvenido al nivel1\n" +
                                         "Al entrar te has encontrado un enemigo, entras en combate con este pero antes\n" +
@@ -72,6 +84,10 @@ public class Nivel1 {
                                 abrirInventario(event);
                                 estadoActual = "esperandoAccion";
                             }
+                            else if(content.equals("Huir")){
+
+                                estadoActual = "esperandoAccion";
+                            }
                             break;
                     }
                 });
@@ -87,24 +103,30 @@ public class Nivel1 {
     }
 
     public void inicializarObjetosBase() {
-        List<ObjectsList> objetosIniciales = new ArrayList<>();
-        objetosIniciales.add(new ObjectsList("Elixir de la vida"));
-        objetosIniciales.add(new ObjectsList("Manzana Podrida"));
-        objetosIniciales.add(new ObjectsList("Espada desafilada"));
-        objetosIniciales.add(new ObjectsList("Espada afilada"));
-        objetosIniciales.add(new ObjectsList("Elixir de la resureccion"));
-        objetosIniciales.add(new ObjectsList("Portal de Huida"));
+        System.out.println("iniciando objetos");
+        if(repositoryObjects.count() == 0){
+            System.out.println("objetos instanciandose");
+            List<ObjectsList> objetosIniciales = new ArrayList<>();
+            objetosIniciales.add(new ObjectsList("Elixir de la vida"));
+            objetosIniciales.add(new ObjectsList("Manzana Podrida"));
+            objetosIniciales.add(new ObjectsList("Espada desafilada"));
+            objetosIniciales.add(new ObjectsList("Espada afilada"));
+            objetosIniciales.add(new ObjectsList("Elixir de la resureccion"));
+            objetosIniciales.add(new ObjectsList("Portal de Huida"));
 
-        objetosIniciales.forEach(objeto -> repositoryObjects.save(objeto));
-        System.out.println("Objetos base inicializados y guardados en la base de datos.");
+            objetosIniciales.forEach(objeto -> repositoryObjects.save(objeto));
+            System.out.println("Objetos base inicializados y guardados en la base de datos.");
+        }
+        else
+        {
+            System.out.println("Objetos ya inyectado en la base de datos.");
+        }
     }
 
-    public void guardarObjetos(String nombreObjeto){
-
+    public void guardarObjetos(String nombreObjeto, MessageCreateEvent event){
         Inventary newItem = new Inventary(nombreObjeto, 1);
         repositoryInventary.save(newItem);
-
-        System.out.println("item guardado con exito en el inventario." +nombreObjeto);
+        Objects.requireNonNull(event.getMessage().getChannel().block().createMessage("item guardado con exito en el inventario. " + nombreObjeto).block());
     }
 }
 

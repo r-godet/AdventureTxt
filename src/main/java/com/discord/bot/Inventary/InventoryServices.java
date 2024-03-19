@@ -40,14 +40,14 @@ public class InventoryServices {
     public String abrirInventario(MessageCreateEvent event){
         List<Inventary> inventario = is.obtenerInventario();
         if (inventario == null || inventario.isEmpty()) {
-           Objects.requireNonNull(event.getMessage().getChannel().block()).createMessage("El inventario está vacío").block();
+           Objects.requireNonNull(event.getMessage().getChannel().block()).createMessage("El inventario esta vacio...").block();
         } else {
             String mensajeInventario = inventario.stream()
                     .map(this::describirObjetoDelInventario)
                     .collect(Collectors.joining(", "));
             Objects.requireNonNull(event.getMessage().getChannel().block()).createMessage("Objetos en el inventario: " + mensajeInventario).block();
         }
-        return " ";
+        return " Inventario : ";
     }
 }
 
