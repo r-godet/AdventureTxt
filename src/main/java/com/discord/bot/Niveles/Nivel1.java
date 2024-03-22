@@ -41,7 +41,12 @@ public class Nivel1 {
     private final LevelsRepository lR;
 
     public Nivel1(GatewayDiscordClient client, ObjectsListRepository repositoryObjects, InventoryServices is, LevelsRepository lR) {
-        lR.save(nivel1);
+        if(lR.count() == 0){
+            lR.save(nivel1);
+            System.out.println("Nivel Guardado");
+        } else{
+            System.out.println("El nivel ya estaba guardado");
+        }
         this.client = client;
         this.repositoryObjects = repositoryObjects;
         this.is = is;

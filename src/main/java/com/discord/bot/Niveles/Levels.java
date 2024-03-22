@@ -27,4 +27,27 @@ public class Levels {
         this.cofres = cofres;
     }
 
+    public String getDescripcio() {
+        return descripcio;
+    }
+
+    public void setDescripcio(String descripcio) {
+        this.descripcio = descripcio;
+    }
+
+    public int getEnemys() {
+        return enemys;
+    }
+
+    public void setEnemys(int enemys) {
+        this.enemys = enemys;
+    }
+
+    public int getCofres() {
+        return cofres;
+    }
+
+    public void setCofres(int cofres) {
+        this.cofres = cofres;
+    }
 }

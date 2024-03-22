@@ -21,16 +21,20 @@ public class User implements Serializable {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "level")
+    private String level;
+
 
     public User() {
         super();
     }
 
-    public User(Long id, String name, String username) {
+    public User(Long id, String name, String username, String level) {
         super();
         this.Id = id;
         this.name = name;
         this.username = username;
+        this.level = level;
     }
 
     public String getName() {
@@ -48,5 +52,9 @@ public class User implements Serializable {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public void setLevel(String level){ this.level = level; }
+
+    public String getLevel() { return level; }
 
 }

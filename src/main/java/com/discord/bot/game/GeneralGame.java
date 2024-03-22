@@ -32,6 +32,7 @@ public class GeneralGame {
     private final GatewayDiscordClient client;
     ArrayList<Inventary> objects = new ArrayList<>(5);
     User user = new User();
+    public String name;
     @Autowired
     ObjectsListRepository repositoryObjects;
 
@@ -40,19 +41,15 @@ public class GeneralGame {
 
     @Autowired
     LevelsRepository lr;
-
-
     @Autowired
     public GeneralGame(GatewayDiscordClient client, ObjectsListRepository repositoryObjects, InventoryServices is, LevelsRepository lr) {
         this.client = client;
         this.repositoryObjects = repositoryObjects;
         this.is = is;
         this.lr = lr;
-        Init();
         Start();
     }
-
-    public String Start() {
+    public String Start(){
         client.getEventDispatcher().on(MessageCreateEvent.class)
                 .subscribe(event -> {
                     String content = event.getMessage().getContent();
@@ -63,21 +60,11 @@ public class GeneralGame {
                                 "Para pasar de nivel deberas luchar contra enemigos y al final luchar\n" +
                                 "contra un bos final.\n" +
                                 "Ahora entraras en el nivel 1... Estas listo? (S/N)").block();
+                        name = event.getMessage().getAuthor().get().getUsername();
                     }
                 });
         Nivel1 n1 = new Nivel1(client, repositoryObjects, is, lr);
+        client.onDisconnect().block();
         return "start";
-    }
-
-    public void Init() {
-        client.getEventDispatcher().on(ReadyEvent.class).subscribe(event -> {
-            String botName = event.getSelf().getUsername();
-
-            final String channelId = "820748099563683864";
-            client.getChannelById(Snowflake.of(channelId))
-                    .ofType(MessageChannel.class)
-                    .flatMap(channel -> channel.createMessage("Conectado como: " + botName))
-                    .subscribe();
-        });
     }
 }
