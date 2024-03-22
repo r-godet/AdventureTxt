@@ -42,8 +42,8 @@ public class Player implements Serializable {
         }
     }
 
-    public void perderVidasPlayer(){
-
+    public void perderVidasPlayer(MessageCreateEvent event){
+        event.getMessage().getChannel().block().createMessage("El Player pierde una vida te quedan = "+vidas).block();
         vidas--;
     }
 

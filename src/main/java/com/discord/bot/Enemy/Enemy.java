@@ -29,16 +29,18 @@ public class Enemy implements Serializable {
     public void perderVidasEnemys(MessageCreateEvent event) {
         Objects.requireNonNull(event.getMessage().getChannel().block().createMessage("El enemigo pierde 1 vida").block());
         vidas--;
-    } //ya está hecho que pierda vidas no?
+    }
 
-    public void ataqueEnemy()
-    {
-        Player player = new Player(client);
+    public void ataqueEnemy(MessageCreateEvent event) {
         Random random = new Random();
-        int randomNumber = random.nextInt(2) + 1;
-
-        if(randomNumber == 1){
-            player.perderVidasPlayer();
+        Player player = new Player(client);
+        int randomNum = random.nextInt(2) + 1;
+        int randomNum2 = random.nextInt(3) + 4;
+        if(randomNum == 1 | randomNum2 == 4){
+            event.getMessage().getChannel().block().createMessage("Ataque Completado con éxito").block();
+            player.perderVidasPlayer(event);
+        } else {
+            event.getMessage().getChannel().block().createMessage("Ataque no completado.").block();
         }
     }
     public void dead(){

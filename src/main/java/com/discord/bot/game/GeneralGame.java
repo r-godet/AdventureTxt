@@ -2,6 +2,7 @@ package com.discord.bot.game;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import com.discord.bot.Inventary.Inventary;
 import com.discord.bot.Inventary.InventoryServices;
+import com.discord.bot.Niveles.LevelsRepository;
 import com.discord.bot.Objects.ObjectsList;
 import com.discord.bot.user.User;
 import discord4j.common.util.Snowflake;
@@ -12,6 +13,7 @@ import com.discord.bot.Niveles.Nivel1;
 import com.discord.bot.Objects.ObjectsListService;
 import com.discord.bot.Objects.ObjectsListRepository;
 import discord4j.core.event.domain.message.MessageCreateEvent;
+import discord4j.core.object.entity.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -36,18 +38,21 @@ public class GeneralGame {
     @Autowired
     InventoryServices is;
 
+    @Autowired
+    LevelsRepository lr;
+
 
     @Autowired
-    public GeneralGame(GatewayDiscordClient client, ObjectsListRepository repositoryObjects, InventoryServices is) {
+    public GeneralGame(GatewayDiscordClient client, ObjectsListRepository repositoryObjects, InventoryServices is, LevelsRepository lr) {
         this.client = client;
         this.repositoryObjects = repositoryObjects;
         this.is = is;
+        this.lr = lr;
         Init();
         Start();
-        Nivel1 n1 = new Nivel1(client, repositoryObjects, is);
-
     }
-    public String Start(){
+
+    public String Start() {
         client.getEventDispatcher().on(MessageCreateEvent.class)
                 .subscribe(event -> {
                     String content = event.getMessage().getContent();
@@ -60,17 +65,19 @@ public class GeneralGame {
                                 "Ahora entraras en el nivel 1... Estas listo? (S/N)").block();
                     }
                 });
+        Nivel1 n1 = new Nivel1(client, repositoryObjects, is, lr);
         return "start";
     }
 
-    public void Init()
-    {
-        client.getEventDispatcher().on(ReadyEvent.class)
-                .subscribe(event -> {
-                    String botName = event.getSelf().getUsername();
-                    System.out.println("Conectado como: " + botName);
-                });
-        Start();
-        client.onDisconnect().block();
+    public void Init() {
+        client.getEventDispatcher().on(ReadyEvent.class).subscribe(event -> {
+            String botName = event.getSelf().getUsername();
+
+            final String channelId = "820748099563683864";
+            client.getChannelById(Snowflake.of(channelId))
+                    .ofType(MessageChannel.class)
+                    .flatMap(channel -> channel.createMessage("Conectado como: " + botName))
+                    .subscribe();
+        });
     }
 }

@@ -13,44 +13,39 @@ import discord4j.core.spec.legacy.LegacyMessageCreateSpec;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.function.Consumer;
-@Entity
-@Table(name =  "Nivel 1")
+
+@Component
 public class Nivel1 {
-
-
-    private transient ItemRepository repositoryInventary;
-
-    private transient GatewayDiscordClient client;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "Enemys")
-    int enemys = 2;
-
-    @Column(name = "player")
-    int players = 1;
-
-    static Scanner scan = new Scanner(System.in);
     User user = new User();
     Inventary inv = new Inventary();
+    Levels nivel1 = new Levels("nivel1", 2, 1);
+    public String estadoActual;
+    public int ataque = 1;
 
-    private transient ObjectsListRepository repositoryObjects;
+    private final GatewayDiscordClient client;
+    @Autowired
+    private ItemRepository repositoryInventary;
+    @Autowired
+    private final ObjectsListRepository repositoryObjects;
+    @Autowired
+    private final InventoryServices is;
 
-    private transient InventoryServices is;
-    private String estadoActual;
+    @Autowired
+    private final LevelsRepository lR;
 
-    public Nivel1(GatewayDiscordClient client, ObjectsListRepository repositoryObjects, InventoryServices is) {
+    public Nivel1(GatewayDiscordClient client, ObjectsListRepository repositoryObjects, InventoryServices is, LevelsRepository lR) {
+        lR.save(nivel1);
         this.client = client;
         this.repositoryObjects = repositoryObjects;
         this.is = is;
+        this.lR = lR;
         this.estadoActual = "inicio";
         inicializarManejadorDeEventos();
     }
@@ -59,9 +54,11 @@ public class Nivel1 {
         inicializarObjetosBase();
         Player player = new Player(client);
         Enemy enemy = new Enemy(client);
+
         client.getEventDispatcher().on(MessageCreateEvent.class)
                 .subscribe(event -> {
                     String content = event.getMessage().getContent();
+
                     switch (estadoActual) {
                         case "inicio":
                             System.out.println("iniciado correctamente switch");
@@ -78,7 +75,14 @@ public class Nivel1 {
                         case "esperandoAccion":
                             if (content.equals("Atacar")) {
                                 atacar(event);
-                                player.ataquePlayer(event);
+                                if(ataque == 1) {
+                                    player.ataquePlayer(event);
+                                    ataque = 2;
+                                }
+                                else if(ataque == 2){
+                                    enemy.ataqueEnemy(event);
+                                }
+
                                 estadoActual = "esperandoAccion";
                             } else if (content.equals("Abrir_inventario")) {
                                 abrirInventario(event);
@@ -105,7 +109,7 @@ public class Nivel1 {
     public void inicializarObjetosBase() {
         System.out.println("iniciando objetos");
         if(repositoryObjects.count() == 0){
-            System.out.println("objetos instanciandose");
+            System.out.println("objetos instanciandose...");
             List<ObjectsList> objetosIniciales = new ArrayList<>();
             objetosIniciales.add(new ObjectsList("Elixir de la vida"));
             objetosIniciales.add(new ObjectsList("Manzana Podrida"));
@@ -114,7 +118,7 @@ public class Nivel1 {
             objetosIniciales.add(new ObjectsList("Elixir de la resureccion"));
             objetosIniciales.add(new ObjectsList("Portal de Huida"));
 
-            objetosIniciales.forEach(objeto -> repositoryObjects.save(objeto));
+            objetosIniciales.forEach(repositoryObjects::save);
             System.out.println("Objetos base inicializados y guardados en la base de datos.");
         }
         else
