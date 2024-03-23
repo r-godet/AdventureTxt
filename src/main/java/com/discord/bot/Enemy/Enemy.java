@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.Random;
 import com.discord.bot.Player.Player;
+import com.discord.bot.Player.PlayerActions;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import jakarta.persistence.Entity;
@@ -33,7 +34,7 @@ public class Enemy implements Serializable {
 
     public void ataqueEnemy(MessageCreateEvent event) {
         Random random = new Random();
-        Player player = new Player(client);
+        PlayerActions player = new PlayerActions(client);
         int randomNum = random.nextInt(2) + 1;
         int randomNum2 = random.nextInt(3) + 4;
         if(randomNum == 1 | randomNum2 == 4){

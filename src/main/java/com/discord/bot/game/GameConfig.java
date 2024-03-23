@@ -3,6 +3,7 @@ package com.discord.bot.game;
 import com.discord.bot.Inventary.InventoryServices;
 import com.discord.bot.Niveles.LevelsRepository;
 import com.discord.bot.Objects.ObjectsListRepository;
+import com.discord.bot.Player.PlayerRepository;
 import discord4j.core.GatewayDiscordClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 public class GameConfig {
 
     @Bean
-    public GeneralGame generalGame(GatewayDiscordClient client, ObjectsListRepository objectsListRepository, InventoryServices is, LevelsRepository lr) {
-        return new GeneralGame(client,objectsListRepository, is, lr);
+    public GeneralGame generalGame(GatewayDiscordClient client, ObjectsListRepository objectsListRepository, InventoryServices is, LevelsRepository lr, PlayerRepository pr) {
+        return new GeneralGame(client,objectsListRepository, is, lr, pr);
     }
 }

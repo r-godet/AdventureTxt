@@ -4,6 +4,7 @@ import com.discord.bot.Objects.ObjectsList;
 import com.discord.bot.Objects.ObjectsListRepository;
 import com.discord.bot.Player.Player;
 import com.discord.bot.Enemy.Enemy;
+import com.discord.bot.Player.PlayerActions;
 import com.discord.bot.user.User;
 import com.discord.bot.Inventary.Inventary;
 import com.discord.bot.Inventary.InventoryServices;
@@ -57,7 +58,7 @@ public class Nivel1 {
     public void inicializarManejadorDeEventos() {
         System.out.println("Iniciador de Eventos inciado");
         inicializarObjetosBase();
-        Player player = new Player(client);
+        PlayerActions player = new PlayerActions(client);
         Enemy enemy = new Enemy(client);
 
         client.getEventDispatcher().on(MessageCreateEvent.class)
